@@ -85,36 +85,10 @@ def build_payload(variable_1, variable_2, variable_3, variable_4):
 
         start = time.time()
         end = time.time()
-
-        if value_2 < 30:
-            GPIO.output(pumpPin, GPIO.HIGH) # on
-            print("PUMP ON")
-            time.sleep(15)
-            GPIO.output(pumpPin, GPIO.LOW) # off
-            print("PUMP OFF")
-        
-        elif value_2 > 30:
-            GPIO.output(pumpPin, GPIO.HIGH) # on
-            print("PUMP ON")
-            time.sleep(30)
-            GPIO.output(pumpPin, GPIO.LOW) # off
-            print("PUMP OFF")
-
-
-
     
     duration = end - start
     print(duration)
-
-    if turbidity < 30:
-        GPIO.output(valvePin, GPIO.HIGH) # on
-        print("VALVE ON")
-    
-    else:
-        GPIO.output(valvePin, GPIO.LOW) # off
-        print("PUMP OFF")
-    
-    
+       
     payload = {variable_1: value_1,
                variable_2: value_2,
                variable_3: turbidity,
@@ -149,6 +123,8 @@ def post_request(payload):
 
 
 def main():
+
+
     payload = build_payload(VARIABLE_LABEL_1, VARIABLE_LABEL_2, VARIABLE_LABEL_3, VARIABLE_LABEL_4)
 
     print("[INFO] Attemping to send data")
