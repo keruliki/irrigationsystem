@@ -11,6 +11,7 @@ DEVICE_LABEL = "raspberrypi"  # Put your device label here
 VARIABLE_LABEL_1 = "humidity"  # Put your first variable label here
 VARIABLE_LABEL_2 = "temperature"  # Put your second variable label here
 VARIABLE_LABEL_3 = "turbidity"  # Put your second variable label here
+VARIABLE_LABEL_4 = "waterlevel"  # Put your second variable label here
 
 import Adafruit_ADS1x15
 
@@ -32,10 +33,24 @@ w = observation.get_weather()
 value_1 = w.get_humidity()
 value_2 = w.get_temperature('celsius')['temp']
 
-def build_payload(variable_1, variable_2, variable_3):
+def build_payload(variable_1, variable_2, variable_3, variable_4):
     # Creates two random values for sending data
 
-    turbidity = adc.read_adc(i, gain=GAIN)
+    #Ready Turbidity
+    turbidity = adc.read_adc(0, gain=GAIN)
+    turbidity = turbidity/300
+    turbidity = turbidity*100
+
+    #Ready Water Level
+    waterlevel = adc.read_adc(1, gain=GAIN)
+    waterlevel = waterlevel/20000
+    waterlevel = waterlevel*100
+    
+    print("Turbidity: " + str(turbidity) + "%")
+    print("Water level: " + str(waterlevel) + "%")
+
+    # Pause for half a second.
+    time.sleep(0.5)
 
     global duration, value_1, value_2, start
     if duration <=100:
@@ -65,7 +80,8 @@ def build_payload(variable_1, variable_2, variable_3):
     
     payload = {variable_1: value_1,
                variable_2: value_2,
-               variable_3: turbidity}
+               variable_3: turbidity,
+               variable_4: waterlevel}
 
     return payload
 
@@ -97,7 +113,7 @@ def post_request(payload):
 
 def main():
     payload = build_payload(
-        VARIABLE_LABEL_1, VARIABLE_LABEL_2, VARIABLE_LABEL_2)
+        VARIABLE_LABEL_1, VARIABLE_LABEL_2, VARIABLE_LABEL_2, VARIABLE_LABEL_4)
 
     print("[INFO] Attemping to send data")
     post_request(payload)
