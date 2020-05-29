@@ -30,14 +30,15 @@ print('Reading ADS1x15 values, press Ctrl-C to quit...')
 while True:
     # Read all the ADC channel values in a list.
 
+    #Ready Turbidity
     turbidity = adc.read_adc(0, gain=GAIN)
     turbidity = turbidity/300
     turbidity = turbidity*100
 
-
+    #Ready Water Level
     waterlevel = adc.read_adc(1, gain=GAIN)
     
-    print("Turbidity: " + turbidity)
+    print("Turbidity: " + turbidity + "%")
     print("Water level: " + waterlevel)
 
     # Pause for half a second.
