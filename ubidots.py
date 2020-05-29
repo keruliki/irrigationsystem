@@ -88,13 +88,17 @@ def build_payload(variable_1, variable_2, variable_3, variable_4):
 
         if value_2 < 30:
             GPIO.output(pumpPin, GPIO.HIGH) # on
+            print("PUMP ON")
             time.sleep(15)
             GPIO.output(pumpPin, GPIO.LOW) # off
+            print("PUMP OFF")
         
         elif value_2 > 30:
             GPIO.output(pumpPin, GPIO.HIGH) # on
+            print("PUMP ON")
             time.sleep(30)
             GPIO.output(pumpPin, GPIO.LOW) # off
+            print("PUMP OFF")
 
 
 
@@ -104,9 +108,11 @@ def build_payload(variable_1, variable_2, variable_3, variable_4):
 
     if turbidity < 30:
         GPIO.output(valvePin, GPIO.HIGH) # on
+        print("VALVE ON")
     
     else:
-        GPIO.output(valvePin, GPIO.LOW) # on
+        GPIO.output(valvePin, GPIO.LOW) # off
+        print("PUMP OFF")
     
     
     payload = {variable_1: value_1,
