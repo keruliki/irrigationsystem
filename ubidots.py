@@ -3,6 +3,17 @@ import requests
 import math
 import random
 import pyowm
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BCM) # GPIO Numbers instead of board numbers
+
+pumpPin = 23
+valvePin = 24
+
+GPIO.setup(pumpPin, GPIO.OUT) # GPIO Assign mode
+GPIO.setup(valvePin, GPIO.OUT) # GPIO Assign mode
+
+GPIO.output(valvePin, GPIO.LOW) # off
+GPIO.output(pumpPin, GPIO.LOW) # off
 
 
 owm = pyowm.OWM('da3d731cc410c8860168bb71afbdf932') #OpenWeather Token
@@ -26,6 +37,8 @@ GAIN = 1
 
 duration = 0
 start = time.time()
+
+
 
 observation = owm.weather_at_place('George Town, MY')
 w = observation.get_weather()
@@ -53,16 +66,16 @@ def build_payload(variable_1, variable_2, variable_3, variable_4):
     time.sleep(0.5)
 
     global duration, value_1, value_2, start
-    if duration <=100:
+    if duration <=300:
         
-        print("Below 10 seconds")
+        print("Below 5 minutes")
         print(value_1)
         print(value_2)
 
         end = time.time()
     
-    elif duration > 100:
-        print("After 10 seconds")
+    elif duration > 300:
+        print("After 5 minutes seconds")
         observation = owm.weather_at_place('George Town, MY')
         w = observation.get_weather()
 
@@ -73,9 +86,27 @@ def build_payload(variable_1, variable_2, variable_3, variable_4):
         start = time.time()
         end = time.time()
 
+        if value_2 < 30:
+            GPIO.output(pumpPin, GPIO.HIGH) # on
+            time.sleep(15)
+            GPIO.output(pumpPin, GPIO.LOW) # off
+        
+        elif value_2 > 30:
+            GPIO.output(pumpPin, GPIO.HIGH) # on
+            time.sleep(30)
+            GPIO.output(pumpPin, GPIO.LOW) # off
+
+
+
     
     duration = end - start
     print(duration)
+
+    if turbidity < 30:
+        GPIO.output(valvePin, GPIO.HIGH) # on
+    
+    else:
+        GPIO.output(valvePin, GPIO.LOW) # on
     
     
     payload = {variable_1: value_1,
