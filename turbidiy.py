@@ -40,8 +40,8 @@ while True:
     waterlevel = waterlevel/20000
     waterlevel = waterlevel*100
     
-    print("Turbidity: " + turbidity + "%")
-    print("Water level: " + waterlevel + "%")
+    print("Turbidity: " + str(turbidity) + "%")
+    print("Water level: " + str(waterlevel) + "%")
 
     # Pause for half a second.
     time.sleep(0.5)
