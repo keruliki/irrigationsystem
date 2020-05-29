@@ -37,9 +37,11 @@ while True:
 
     #Ready Water Level
     waterlevel = adc.read_adc(1, gain=GAIN)
+    waterlevel = waterlevel/20000
+    waterlevel = waterlevel*100
     
     print("Turbidity: " + turbidity + "%")
-    print("Water level: " + waterlevel)
+    print("Water level: " + waterlevel + "%")
 
     # Pause for half a second.
     time.sleep(0.5)
