@@ -112,7 +112,7 @@ def build_payload(variable_1, variable_2, variable_3, variable_4):
     
     else:
         GPIO.output(valvePin, GPIO.LOW) # off
-        print("PUMP OFF")
+        print("VALVE OFF")
     
     
     payload = {variable_1: value_1,
